@@ -1,9 +1,14 @@
-﻿namespace BibliotecaMVC.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BibliotecaMVC.Models
 {
     public class Libro
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string Titulo { get; set; }
+
+        [Required]
+        [StringLength(100)]
         public string Autor { get; set; }
 
         public string Categoria { get; set; }

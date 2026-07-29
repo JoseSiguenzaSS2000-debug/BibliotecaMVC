@@ -2,45 +2,51 @@
 
 @{
     List<Libro> libros = ViewBag.Libros;
-
 }
-    
-    <h2>Catalogo de Libros </h2>
 
-    <table class="table table-striped"> 
-        <thead>
+<h2>Catalogo de Libros</h2>
+
+<a class="btn btn-primary mb-3" asp-action="Create">Nuevo Libro +</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Titulo</th>
+            <th>Autor</th>
+            <th>Categoria</th>
+            <th>Precio</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var libro in libros)
+        {
             <tr>
-                <th>ID</th>
-                <th>Titulo</th>
-                <th>Autor</th>
-                <th>Categoria</th>
-                <th>Precio</th>
-                <th>Estado</th>
+                <td>@libro.Id</td>
+                <td>@libro.Titulo</td>
+                <td>@libro.Autor</td>
+                <td>@libro.Categoria</td>
+                <td>$@libro.Precio</td>
+                <td>
+                    @if (libro.Disponible)
+                    {
+                        <spam class="badge bg-success">Disponible</spam>
+                    }
+                    else
+                    {
+                        <spam class="badge bg-danger">Prestado</spam>
+                    }
+                </td>
+
+                <td>
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@libro.Id">Ver</a>
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@libro.Id">Editar</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@libro.Id">Eliminar</a>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var libro in libros)
-            {
-                <tr>
-                    <td>@libro.ID</td>
-                    <td>@libro.Titulo</td>
-                    <td>@libro.Autor</td>
-                    <td>@libro.Categoria</td>
-                    <td>$@libro.Precio</td>
-                    <td>
-                        @if (libro.Disponible)
-                        {
-                            <spam class="badge bg-success"> Disponible </spam>
-                        }
-                        else
-                        {
-                            <spam class="badge bg-danger"> Prestado </spam>
-                        }
-                    </td>
-
-                </tr>
-            }
-        </tbody>
-
-    </table>
+        }
+    </tbody>
+</table>
 
