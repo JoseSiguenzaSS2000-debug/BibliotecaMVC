@@ -1,8 +1,87 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿<div class="container mt-5">
+    <div class="row align-items-center">
 
-<div class="text-center">
-    <h1>Sistema de Gestion de Biblioteca</h1>
-    <p>Bienvenidos al sistema desarrollado con ASP.Net core MVC</p>
+        <div class="col-md-6">
+            <h1 class="display-4">Biblioteca MVC</h1>
+            <p class="lead">Explora nuestra biblioteca y encuentra una gran variedad de libros para aprender, investigar y disfrutar. 
+                Desde clásicos de la literatura hasta temas académicos y de interés general, 
+                tenemos recursos para acompañarte en cada etapa de tu aprendizaje.</p>
+            <a asp-controller="Home" asp-action="About" class="btn btn-secondary">Conocer mas</a>
+        </div>
+
+        <div class="col-md-6 text-center">
+            <img src="https://picsum.photos/500/350" class="img-fluid rounded shadow" alt="Biblioteca" />
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Servicio de la Biblioteca</h2>
+
+    <div class="row">
+
+        <!-- Servicio 1 -->
+        
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 shadow-sm">
+                <img src="https://picsum.photos/200/100" class="card-img-top" alt="Libros">
+                <div class="card-body">
+                    <h5 class="card-title">Libros</h5>
+                    <p class="card-text">Consulta los libros disponibles en nuestra biblioteca.</p>
+                    <a asp-controller="Libros" asp-action="Index" class="btn btn-secondary">Ver libros</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Servicio 2 -->
+
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 shadow-sm">
+                <img src="https://picsum.photos/200/100" class="card-img-top" alt="Autores">
+                <div class="card-body">
+                    <h5 class="card-title">Autores</h5>
+                    <p class="card-text">Conoce los autores registrados en nuestra biblioteca.</p>
+                    <a asp-controller="Autores" asp-action="Index" class="btn btn-secondary">Ver autores</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Servicio 3 -->
+
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 shadow-sm">
+                <img src="https://picsum.photos/200/100" class="card-img-top" alt="Biblioteca">
+                <div class="card-body">
+                    <h5 class="card-title">Biblioteca</h5>
+                    <p class="card-text">Conoce más sobre los servicios de nuestra biblioteca.</p>
+                    <a asp-controller="Home" asp-action="About" class="btn btn-secondary">Conocer más</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container mt-5">
+    <div class="row text-center">
+
+        <div class="col-md-4">
+            <h2 class="text-secondary">500+</h2>
+            <p>Libros disponibles</p>
+        </div>
+
+        <div class="col-md-4">
+            <h2 class="text-secondary">120+</h2>
+            <p>Autores registrados</p>
+        </div>
+
+        <div class="col-md-4">
+            <h2 class="text-secondary">25+</h2>
+            <p>Categorías literarias</p>
+        </div>
+
+    </div>
 </div>

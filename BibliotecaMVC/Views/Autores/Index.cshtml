@@ -6,7 +6,7 @@
 <h1>@ViewData["Title"]</h1>
 <p>Hay @Model.Count() autores registrados</p>
 
-<a class="btn btn-primary mb-3" asp-action="Create">Nuevo Autor +</a>
+<a class="btn btn-secondary mb-3" asp-action="Create">Nuevo Autor +</a>
 
 <div class="row">
     @foreach (var autor in Model)
@@ -18,7 +18,7 @@
                     <h6>@autor.Nacionalidad</h6>
                     <p>Edad: @(DateTime.Now.Year - autor.FechaNacimiento.Year)</p>
 
-                    <a class="btn btn-info" asp-action="Details" asp-route-id="@autor.Id">Ver</a>
+                    <a class="btn btn-secondary" asp-action="Details" asp-route-id="@autor.Id">Ver</a>
                     <a class="btn btn-warning" asp-action="Edit" asp-route-id="@autor.Id">Editar</a>
                     <a class="btn btn-danger" asp-action="Delete" asp-route-id="@autor.Id">Eliminar</a>
 
