@@ -10,67 +10,60 @@
 
     <div class="row">
 
-        <!-- apartado informacion principal dondde va el mision y vision -->
+        <!-- apartado informacion principal donde va el mision y vision que ahora va con InfoCard -->
+
         <div class="col-md-8 mb-4">
-            <div class="card about-card shadow-sm h-100">
-                <div class="card-body">
 
-                    <div class="mb-4">
-                        <h2 class="h4 fw-bold">¿Quiénes somos?</h2>
-                        <p>
-                            Somos una biblioteca creada para facilitar el acceso a libros y recursos educativos,
-                            ofreciendo un espacio donde los usuarios puedan aprender, investigar y disfrutar de la lectura.
-                        </p>
-                    </div>
+            @await Html.PartialAsync("_InfoCard", new BibliotecaMVC.Models.InfoCard { Title = "¿Quienes somos?", Text = "Somos una biblioteca creada para facilitar el acceso a libros y recursos educativos, ofreciendo un espacio donde los usuarios puedan aprender, investigar y disfrutar de la lectura." })
 
-                    <hr />
+            <div class="mt-4">
 
-                    <div class="mb-4">
-                        <h2 class="h4 fw-bold">Misión</h2>
-                        <p>
-                            Brindar acceso a recursos bibliográficos de calidad y promover el hábito de la lectura,
-                            contribuyendo al aprendizaje y desarrollo de nuestra comunidad.
-                        </p>
-                    </div>
+                @await Html.PartialAsync("_InfoCard", new BibliotecaMVC.Models.InfoCard { Title = "Misión", Text = "Brindar acceso a recursos bibliográficos de calidad y promover el hábito de la lectura, contribuyendo al aprendizaje y desarrollo de nuestra comunidad." })
 
-                    <hr />
-
-                    <div>
-                        <h2 class="h4 fw-bold">Visión</h2>
-                        <p>
-                            Ser una biblioteca moderna y accesible, reconocida por ofrecer una amplia variedad de
-                            recursos y por fomentar el conocimiento, la educación y la cultura.
-                        </p>
-                    </div>
-
-                </div>
             </div>
+
+            <div class="mt-4">
+
+                @await Html.PartialAsync("_InfoCard", new BibliotecaMVC.Models.InfoCard { Title = "Visión", Text = "Ser una biblioteca moderna y accesible, reconocida por ofrecer una amplia variedad de recursos y por fomentar el conocimiento, la educación y la cultura." })
+
+            </div>
+
         </div>
 
 
-        <!-- zona de informaci[oin] -->
+        <!-- zona de informacion -->
+
         <div class="col-md-4 mb-4">
-            <div class="card about-card shadow-sm h-100">
-                <div class="card-body">
 
-                    <h2 class="h4 fw-bold">Información</h2>
+            @await Html.PartialAsync("_InfoCard", new BibliotecaMVC.Models.InfoCard { Title = "Información", Text = "Consulta nuestra colección de libros y encuentra recursos para tus estudios y proyectos. Explora, aprende y descubre nuevas historias a través de nuestra biblioteca." })
 
-                    <p>
-                        Consulta nuestra colección de libros y encuentra recursos para tus estudios y proyectos.
-                    </p>
-
-                    <p>
-                        Explora, aprende y descubre nuevas historias a través de nuestra biblioteca.
-                    </p>
-
-                </div>
-            </div>
         </div>
 
     </div>
 
 
+    <!-- servicios de la Biblioteca -->
+
+    <div class="row mt-4">
+
+        <div class="col-md-6 mb-4">
+
+            @await Html.PartialAsync("_ServiceCard", new BibliotecaMVC.Models.ServiceCard { ImageUrl = "https://picsum.photos/300/150", Text = "Consulta los libros disponibles en nuestra biblioteca" })
+
+        </div>
+
+
+        <div class="col-md-6 mb-4">
+
+            @await Html.PartialAsync("_ServiceCard", new BibliotecaMVC.Models.ServiceCard { ImageUrl = "https://picsum.photos/300/150", Text = "Encuentra recursos para tus estudios y proyectos" })
+
+        </div>
+         
+    </div>
+
+
     <!-- apartado de nuestra Biblioteca -->
+
     <div class="card about-card shadow-sm h-100">
         <div class="card-body">
 

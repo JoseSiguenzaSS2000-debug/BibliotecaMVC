@@ -1,69 +1,144 @@
-﻿<div class="container mt-5">
-    <div class="row align-items-center">
+﻿```razor
+<div class="container mt-5">
 
-        <div class="col-md-6">
+    <div class="home-flex">
+
+        <div class="home-content">
             <h1 class="display-4">Biblioteca MVC</h1>
-            <p class="lead">Explora nuestra biblioteca y encuentra una gran variedad de libros para aprender, investigar y disfrutar. 
-                Desde clásicos de la literatura hasta temas académicos y de interés general, 
-                tenemos recursos para acompañarte en cada etapa de tu aprendizaje.</p>
-            <a asp-controller="Home" asp-action="About" class="btn btn-secondary">Conocer mas</a>
+
+            <p class="lead">
+                Explora nuestra biblioteca y encuentra una gran variedad de libros para aprender,
+                investigar y disfrutar. Desde clásicos de la literatura hasta temas académicos
+                y de interés general, tenemos recursos para acompañarte en cada etapa de tu aprendizaje.
+            </p>
+
+            <a asp-controller="Home" asp-action="About" class="btn btn-secondary"> Conocer más</a>
         </div>
 
-        <div class="col-md-6 text-center">
-            <img src="https://picsum.photos/500/350" class="img-fluid rounded shadow" alt="Biblioteca" />
+        <div class="home-image">
+            <img src="https://picsum.photos/500/350"
+                 class="img-fluid rounded shadow"
+                 alt="Biblioteca" />
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Parte de la semana 5 con CSS GRID -->
+<div class="section">
+
+    <h2 class="text-center mb-4">Biblioteca Virtual</h2>
+
+    <div class="biblioteca-grid">
+
+        <div class="grid-card">
+            <h4>Libros destacados</h4>
+            <p>Encuentra libros recomendados de nuestra biblioteca.</p>
+        </div>
+
+        <div class="grid-card">
+            <h4>Categorías</h4>
+            <p>Explora libros de diferentes categorías literarias.</p>
+        </div>
+
+        <div class="grid-card">
+            <h4>Autores</h4>
+            <p>Conoce los autores disponibles en nuestra biblioteca.</p>
         </div>
 
     </div>
 </div>
 
 
+<!--SIN RESPONSIVE-->
+<div class="section">
+    <h2 class="text-center mb-4">1. Sin Responsive</h2>
+
+    <div class="contenedor sin-responsive">
+
+        @await Html.PartialAsync("_ServiceCard", new BibliotecaMVC.Models.ServiceCard { ImageUrl = "https://picsum.photos/200/100", Text = "(1) Consulta los libros disponibles en nuestra biblioteca" })
+        @await Html.PartialAsync("_ServiceCard", new BibliotecaMVC.Models.ServiceCard { ImageUrl = "https://picsum.photos/200/100", Text = "(2) Consulta los libros disponibles en nuestra biblioteca" })
+        @await Html.PartialAsync("_ServiceCard", new BibliotecaMVC.Models.ServiceCard { ImageUrl = "https://picsum.photos/200/100", Text = "(3) Consulta los libros disponibles en nuestra biblioteca" })
+
+    </div>
+</div>
+
+<!--MEDIA QUERIES-->
+<div class="section">
+    <h2 class="text-center mb-4">2. Responsive con medias queries</h2>
+
+    <div class="contenedor media-query">
+        @await Html.PartialAsync("_ServiceCard", new BibliotecaMVC.Models.ServiceCard { ImageUrl = "https://picsum.photos/200/100", Text = "(1) Consulta los libros disponibles en nuestra biblioteca" })
+        @await Html.PartialAsync("_ServiceCard", new BibliotecaMVC.Models.ServiceCard { ImageUrl = "https://picsum.photos/200/100", Text = "(2) Consulta los libros disponibles en nuestra biblioteca" })
+        @await Html.PartialAsync("_ServiceCard", new BibliotecaMVC.Models.ServiceCard { ImageUrl = "https://picsum.photos/200/100", Text = "(3) Consulta los libros disponibles en nuestra biblioteca" })
+
+    </div>
+</div>
+
+<!--BOOTSTRAPP-->
 <div class="container mt-5">
-    <h2 class="text-center mb-4">Servicio de la Biblioteca</h2>
+    <h2 class="text-center mb-4">3. Responsive con Bootstrap</h2>
 
     <div class="row">
-
-        <!-- Servicio 1 -->
-        
-        <div class="col-md-4 mb-3">
+        <!--servicio 1 -->
+        <div class="col-12 col-md-4 mb-3">
             <div class="card h-100 shadow-sm">
-                <img src="https://picsum.photos/200/100" class="card-img-top" alt="Libros">
+            <img src="https://picsum.photos/200/100" alt="Libros" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title">Libros</h5>
+                <p class="card-text">(1) Consulta los libros disponibles en nuestra biblioteca</p>
+            </div>
+            </div>
+        </div>
+
+        <!--servicio 2 -->
+        <div class="col-12 col-md-4 mb-3">
+            <div class="card h-100 shadow-sm">
+            <img src="https://picsum.photos/200/100" alt="Libros" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title">Libros</h5>
+                <p class="card-text">(1) Consulta los libros disponibles en nuestra biblioteca</p>
+            </div>
+            </div>
+        </div>
+
+
+        <!--servicio 3 -->
+        <div class="col-12 col-md-4 mb-3">
+            <div class="card h-100 shadow-sm">
+                <img src="https://picsum.photos/200/100" alt="Libros" class="card-img-top">
                 <div class="card-body">
                     <h5 class="card-title">Libros</h5>
-                    <p class="card-text">Consulta los libros disponibles en nuestra biblioteca.</p>
-                    <a asp-controller="Libros" asp-action="Index" class="btn btn-secondary">Ver libros</a>
+                    <p class="card-text">(1) Consulta los libros disponibles en nuestra biblioteca</p>
                 </div>
             </div>
         </div>
-
-        <!-- Servicio 2 -->
-
-        <div class="col-md-4 mb-3">
-            <div class="card h-100 shadow-sm">
-                <img src="https://picsum.photos/200/100" class="card-img-top" alt="Autores">
-                <div class="card-body">
-                    <h5 class="card-title">Autores</h5>
-                    <p class="card-text">Conoce los autores registrados en nuestra biblioteca.</p>
-                    <a asp-controller="Autores" asp-action="Index" class="btn btn-secondary">Ver autores</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Servicio 3 -->
-
-        <div class="col-md-4 mb-3">
-            <div class="card h-100 shadow-sm">
-                <img src="https://picsum.photos/200/100" class="card-img-top" alt="Biblioteca">
-                <div class="card-body">
-                    <h5 class="card-title">Biblioteca</h5>
-                    <p class="card-text">Conoce más sobre los servicios de nuestra biblioteca.</p>
-                    <a asp-controller="Home" asp-action="About" class="btn btn-secondary">Conocer más</a>
-                </div>
-            </div>
-        </div>
-
     </div>
 </div>
 
+<!--CSS GRID-->
+<div class="section">
+    <h2 class="text-center mb-4">4. Responsive con CSS GRID</h2>
+
+    <div class="contenedor grid-layout">
+
+        @await Html.PartialAsync("_ServiceCard", new BibliotecaMVC.Models.ServiceCard{ ImageUrl = "https://picsum.photos/200/100",Text = "(1) Consulta los libros disponibles en nuestra biblioteca" })
+        @await Html.PartialAsync("_ServiceCard", new BibliotecaMVC.Models.ServiceCard{ ImageUrl = "https://picsum.photos/200/100",Text = "(2) Consulta los libros disponibles en nuestra biblioteca" })
+        @await Html.PartialAsync("_ServiceCard", new BibliotecaMVC.Models.ServiceCard{ ImageUrl = "https://picsum.photos/200/100",Text = "(3) Consulta los libros disponibles en nuestra biblioteca" })
+    </div>
+</div>
+
+<!--FLEXBOX-->
+<div class="section">
+    <h2 class="text-center mb-4">5. Responsive con FLEXBOX</h2>
+
+    <div class="contenedor flex-layout">
+        @await Html.PartialAsync("_ServiceCard", new BibliotecaMVC.Models.ServiceCard { ImageUrl = "https://picsum.photos/200/100", Text = "(1) Consulta los libros disponibles en nuestra biblioteca" })
+        @await Html.PartialAsync("_ServiceCard", new BibliotecaMVC.Models.ServiceCard { ImageUrl = "https://picsum.photos/200/100", Text = "(2) Consulta los libros disponibles en nuestra biblioteca" })
+        @await Html.PartialAsync("_ServiceCard", new BibliotecaMVC.Models.ServiceCard { ImageUrl = "https://picsum.photos/200/100", Text = "(3) Consulta los libros disponibles en nuestra biblioteca" })
+    </div>
+</div>
 
 <div class="container mt-5">
     <div class="row text-center">
