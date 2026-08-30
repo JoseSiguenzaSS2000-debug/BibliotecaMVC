@@ -1,8 +1,6 @@
-﻿@using BibliotecaMVC.Models
+﻿@model IEnumerable<BibliotecaMVC.Models.Libro>
 
-@{
-    List<Libro> libros = ViewBag.Libros;
-}
+
 
 <h2>Catalogo de Libros</h2>
 
@@ -21,7 +19,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var libro in libros)
+        @foreach (var libro in Model)
         {
             <tr>
                 <td>@libro.Id</td>
