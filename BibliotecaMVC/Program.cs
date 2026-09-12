@@ -1,10 +1,20 @@
 using BibliotecaMVC.Repositories;
 using BibliotecaMVC.Services;
+using BibliotecaMVC.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<BibliotecaContext>(Options =>
+    Options.UseSqlServer(
+        builder.Configuration.GetConnectionString("BibliotecaDB"))
+);
+
+// Add services to the container.
+
 
 builder.Services.AddSingleton<IRepositorioLibro, RepositorioEnMemoria>();
 builder.Services.AddScoped<IAutorService, AutorService>();

@@ -4,6 +4,8 @@
     ViewData["Title"] = "Crear autor";
 }
 
+<h1>Crear Autor</h1>
+
 <form asp-action="Create" method="post">
 
     <div class="mb-3">
@@ -20,7 +22,7 @@
 
     <div class="mb-3">
         <label asp-for="FechaNacimiento"></label>
-        <input asp-for="FechaNacimiento" class="form-control" />
+        <input asp-for="FechaNacimiento" class="form-control" type="date" />
         <span asp-validation-for="FechaNacimiento"></span>
     </div>
 

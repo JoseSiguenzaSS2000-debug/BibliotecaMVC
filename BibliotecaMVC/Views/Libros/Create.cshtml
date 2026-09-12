@@ -4,6 +4,8 @@
     ViewData["Title"] = "Crear libro";
 }
 
+<h1>Crear Libro</h1>
+
 <form asp-action="Create" method="post">
 
     <div class="mb-3">
@@ -28,6 +30,12 @@
         <label asp-for="Precio"></label>
         <input asp-for="Precio" class="form-control" />
         <span asp-validation-for="Precio"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Disponible"></label>
+        <input asp-for="Disponible" class="form-check-input" />
+        <span asp-validation-for="Disponible"></span>
     </div>
 
     <button type="submit" class="btn btn-success">Crear</button>
