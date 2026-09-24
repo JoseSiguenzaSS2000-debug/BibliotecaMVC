@@ -78,7 +78,7 @@ namespace BibliotecaMVC.Controllers
         {
             if (id != autor.Id)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             if (!ModelState.IsValid)
@@ -86,42 +86,23 @@ namespace BibliotecaMVC.Controllers
                 return View(autor);
             }
 
-            try
-            {
-                _context.Update(autor);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AutorExists(autor.Id))
-                {
-                    return NotFound();
-                }
-
-                throw;
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        // Autores borrar
-        public async Task<IActionResult> Delete(int id)
-        {
-            var autor = await _context.Autores
-                .FirstOrDefaultAsync(a => a.Id == id);
-
-            if (autor == null)
+            var exists = await _context.Autores.AnyAsync(a => a.Id == id);
+            if (!exists)
             {
                 return NotFound();
             }
 
-            return View(autor);
+            _context.Update(autor);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // Autores borrar
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+
+        public async Task<IActionResult> Delete(int id)
         {
             var autor = await _context.Autores.FindAsync(id);
 
@@ -134,11 +115,6 @@ namespace BibliotecaMVC.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool AutorExists(int id)
-        {
-            return _context.Autores.Any(e => e.Id == id);
         }
     }
 }

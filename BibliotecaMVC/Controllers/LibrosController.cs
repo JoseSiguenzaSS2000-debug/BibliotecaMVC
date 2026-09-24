@@ -14,7 +14,7 @@ namespace BibliotecaMVC.Controllers
             _context = context;
         }
 
-        //Libros
+        // Libros
         public async Task<IActionResult> Index()
         {
             var libros = await _context.Libros.ToListAsync();
@@ -22,7 +22,7 @@ namespace BibliotecaMVC.Controllers
             return View(libros);
         }
 
-        //  Libros detalles
+        // Libros detalles
         public async Task<IActionResult> Details(int id)
         {
             var libro = await _context.Libros
@@ -36,14 +36,13 @@ namespace BibliotecaMVC.Controllers
             return View(libro);
         }
 
-        // Libros crear
+        // Libros creación
         public IActionResult Create()
         {
             return View();
         }
 
-        //  Libros crear
-
+        // Libros creación
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Libro libro)
@@ -59,7 +58,7 @@ namespace BibliotecaMVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //  Libros editar
+        // Libros editar
         public async Task<IActionResult> Edit(int id)
         {
             var libro = await _context.Libros.FindAsync(id);
@@ -72,19 +71,25 @@ namespace BibliotecaMVC.Controllers
             return View(libro);
         }
 
-        //Libros editar
+        // Libros editar
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Libro libro)
         {
             if (id != libro.Id)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             if (!ModelState.IsValid)
             {
                 return View(libro);
+            }
+
+            var exists = await _context.Libros.AnyAsync(l => l.Id == id);
+            if (!exists)
+            {
+                return NotFound();
             }
 
             _context.Update(libro);
@@ -93,25 +98,10 @@ namespace BibliotecaMVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //  Libros editar
-        public async Task<IActionResult> Delete(int id)
-        {
-            var libro = await _context.Libros
-                .FirstOrDefaultAsync(l => l.Id == id);
-
-            if (libro == null)
-            {
-                return NotFound();
-            }
-
-            return View(libro);
-        }
-
-        // POST: Libros borrar
-
+        // Libros borrar
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var libro = await _context.Libros.FindAsync(id);
 

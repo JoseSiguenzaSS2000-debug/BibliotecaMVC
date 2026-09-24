@@ -4,29 +4,36 @@
     ViewData["Title"] = "Editar autor";
 }
 
-<form asp-action="Edit" method="post">
+<div class="card shadow-sm">
+    <div class="card-body">
 
-    <input asp-for="Id" type="hidden" />
+        <h2 class="card-title">@ViewData["Title"]</h2>
 
-    <div class="mb-3">
-        <label asp-for="Nombre"></label>
-        <input asp-for="Nombre" class="form-control" />
-        <span asp-validation-for="Nombre"></span>
+        <form asp-action="Edit" method="post" class="swal-save-form">
+            <input asp-for="Id" type="hidden" />
+
+            <div class="mb-3">
+                <label asp-for="Nombre" class="form-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Nacionalidad" class="form-label"></label>
+                <input asp-for="Nacionalidad" class="form-control" />
+                <span asp-validation-for="Nacionalidad" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="FechaNacimiento" class="form-label"></label>
+                <input asp-for="FechaNacimiento" type="date" class="form-control" />
+                <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success">Guardar cambios</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+
+        </form>
+
     </div>
-
-    <div class="mb-3">
-        <label asp-for="Nacionalidad"></label>
-        <input asp-for="Nacionalidad" class="form-control" />
-        <span asp-validation-for="Nacionalidad"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="FechaNacimiento"></label>
-        <input asp-for="FechaNacimiento" class="form-control" />
-        <span asp-validation-for="FechaNacimiento"></span>
-    </div>
-
-    <button type="submit" class="btn btn-success">Guardar cambios</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-
-</form>
+</div>

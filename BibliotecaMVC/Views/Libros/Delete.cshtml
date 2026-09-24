@@ -9,14 +9,20 @@
 <h3>¿Está seguro de eliminar este libro?</h3>
 
 <dl class="row">
+    <dt>Título</dt>
+    <dd>@Model.Titulo</dd>
+
     <dt>Autor</dt>
     <dd>@Model.Autor</dd>
 
-    <dt>Categoria</dt>
+    <dt>Categoría</dt>
     <dd>@Model.Categoria</dd>
 
     <dt>Precio</dt>
     <dd>$@Model.Precio</dd>
+
+    <dt>Disponible</dt>
+    <dd>@(Model.Disponible ? "Sí" : "No")</dd>
 </dl>
 
 <form asp-action="Delete" method="post">

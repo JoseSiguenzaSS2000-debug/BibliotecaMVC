@@ -10,11 +10,14 @@
     <dt>Autor</dt>
     <dd>@Model.Autor</dd>
 
-    <dt>Categoria</dt>
+    <dt>Categoría</dt>
     <dd>@Model.Categoria</dd>
 
     <dt>Precio</dt>
     <dd>$@Model.Precio</dd>
+
+    <dt>Disponible</dt>
+    <dd>@(Model.Disponible ? "Sí" : "No")</dd>
 </dl>
 
 <a asp-action="Index" class="btn btn-primary">Volver al listado</a>
