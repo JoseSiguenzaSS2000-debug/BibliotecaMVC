@@ -3,6 +3,7 @@ using BibliotecaMVC.Services;
 using BibliotecaMVC.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,14 @@ builder.Services.AddDbContext<BibliotecaContext>(Options =>
     Options.UseSqlServer(
         builder.Configuration.GetConnectionString("BibliotecaDB"))
 );
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<BibliotecaContext>();
+
+builder.Services.ConfigureApplicationCookie(Options =>
+{
+    Options.LoginPath = "/Account/Login";
+});
+
 
 // Add services to the container.
 
