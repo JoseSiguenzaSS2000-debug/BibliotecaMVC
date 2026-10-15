@@ -14,11 +14,18 @@ builder.Services.AddDbContext<BibliotecaContext>(Options =>
         builder.Configuration.GetConnectionString("BibliotecaDB"))
 );
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<BibliotecaContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(Options =>
+{
+    Options.Lockout.MaxFailedAccessAttempts = 5;
+    Options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+    Options.Lockout.AllowedForNewUsers = true;
+
+}).AddEntityFrameworkStores<BibliotecaContext>();
 
 builder.Services.ConfigureApplicationCookie(Options =>
 {
     Options.LoginPath = "/Account/Login";
+    Options.AccessDeniedPath = "/Account/AccesDenied";
 });
 
 
@@ -41,6 +48,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

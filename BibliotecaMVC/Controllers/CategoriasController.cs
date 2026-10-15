@@ -1,10 +1,12 @@
 ﻿using BibliotecaMVC.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Data.SqlClient;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BibliotecaMVC.Controllers
 {
+    [Authorize]
     public class CategoriasController : Controller
     {
         private readonly string _connectionstring;

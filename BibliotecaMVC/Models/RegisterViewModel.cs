@@ -23,7 +23,7 @@ namespace BibliotecaMVC.Models
         [Required(ErrorMessage = "La confirmacion de contrasenia es obligatoria")]
         [DataType(DataType.Password)]
         [Compare(nameof(Password), ErrorMessage ="Contrasenias no coinciden")]
-        [Display(Name = "Confirmaciond e contrasenia")]
+        [Display(Name = "Confirmacion de contrasenia")]
         public string ConfirmPassword { get; set; } = string.Empty;
 
     }

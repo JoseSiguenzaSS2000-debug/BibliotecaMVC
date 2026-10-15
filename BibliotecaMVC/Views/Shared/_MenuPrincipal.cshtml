@@ -13,18 +13,22 @@
                 <li class="nav-item">
                     <a class="nav-link " asp-controller="Categorias" asp-action="Index">Categorias</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link " asp-controller="Libros" asp-action="Index">Libros</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " asp-controller="Autores" asp-action="Index">Autores</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " asp-controller="Home" asp-action="Usuarios">Usuarios</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " asp-controller="Home" asp-action="Prestamos">Prestamos</a>
-                </li>
+                @if(User.Identity?.IsAuthenticated == true)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link " asp-controller="Libros" asp-action="Index">Libros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " asp-controller="Autores" asp-action="Index">Autores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " asp-controller="Home" asp-action="Usuarios">Usuarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " asp-controller="Home" asp-action="Prestamos">Prestamos</a>
+                    </li>
+                }
+
                 <li class="nav-item">
                     <a class="nav-link " asp-controller="Home" asp-action="About">Acerca de</a>
                 </li>
@@ -37,7 +41,9 @@
                  </li>
                  <li class="nav-item">
                      <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                         <button class="submit" class="nav-link btn btn-link">Cerras sesion</button>
+                            
+                            <button type="submit" class="nav-link btn btn-link">Cerrar sesión</button>
+                            
 
                      </form>
                  </li>
