@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
 using BibliotecaMVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using BibliotecaMVC.Data;
@@ -16,7 +17,7 @@ namespace BibliotecaMVC.Controllers
             _context = context;
         }
 
-        //  Autores
+        // Autores
         public async Task<IActionResult> Index()
         {
             var autores = await _context.Autores.ToListAsync();
@@ -24,7 +25,7 @@ namespace BibliotecaMVC.Controllers
             return View(autores);
         }
 
-        //  Autores detalles
+        // Autores detalles
         public async Task<IActionResult> Details(int id)
         {
             var autor = await _context.Autores
@@ -38,15 +39,17 @@ namespace BibliotecaMVC.Controllers
             return View(autor);
         }
 
-        // Autores creaci[on
+        // Autores creación (GET)
+        [Authorize(Roles = "Admin, Bibliotecario")]
         public IActionResult Create()
         {
             return View();
         }
 
-        //Autores creacion
+        // Autores creación (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Bibliotecario")]
         public async Task<IActionResult> Create(Autor autor)
         {
             if (!ModelState.IsValid)
@@ -60,7 +63,8 @@ namespace BibliotecaMVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // Autores editar
+        // Autores editar (GET)
+        [Authorize(Roles = "Admin, Bibliotecario")]
         public async Task<IActionResult> Edit(int id)
         {
             var autor = await _context.Autores.FindAsync(id);
@@ -73,9 +77,10 @@ namespace BibliotecaMVC.Controllers
             return View(autor);
         }
 
-        // Autores editar
+        // Autores editar (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Bibliotecario")]
         public async Task<IActionResult> Edit(int id, Autor autor)
         {
             if (id != autor.Id)
@@ -89,6 +94,7 @@ namespace BibliotecaMVC.Controllers
             }
 
             var exists = await _context.Autores.AnyAsync(a => a.Id == id);
+
             if (!exists)
             {
                 return NotFound();
@@ -96,14 +102,14 @@ namespace BibliotecaMVC.Controllers
 
             _context.Update(autor);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
-        // Autores borrar
-
+        // Autores borrar: solo Admin
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var autor = await _context.Autores.FindAsync(id);

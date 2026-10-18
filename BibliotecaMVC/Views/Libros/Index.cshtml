@@ -5,7 +5,10 @@
 
 <div class="d-flex justify-content-between align-content-center mb-3">
     <h1 class="h3 mb-0"> @ViewData["Title"] <small class="text-muted">(@Model.Count())</small> </h1>
+    @if (User.IsInRole("Admin") || User.IsInRole("Bibliotecario"))
+    {
     <a class="btn btn-primary" asp-action="Create">Nuevo Libro +</a>
+    }
 </div>
 
 
@@ -25,11 +28,17 @@
 
                     <div class="d-flex gap-2 mt-auto">
                         <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@libro.Id">Detalles</a>
-                        <a class="btn btn-outline-secondary swal-edit-link" asp-action="Edit" asp-route-id="@libro.Id">Editar</a>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Bibliotecario"))
+                        {
+                            <a class="btn btn-outline-secondary swal-edit-link" asp-action="Edit" asp-route-id="@libro.Id">Editar</a>
+                        }
+                        @if (User.IsInRole("Admin") || User.IsInRole("Bibliotecario"))
+                        {
                         <form asp-action="Delete" asp-route-id="@libro.Id" method="post" class="swal-delete-form d-inline">
                             @Html.AntiForgeryToken()
                             <button type="submit" class="btn btn-danger">Eliminar</button>
                         </form>
+                        }
                     </div>
                 </div>
             </div>
