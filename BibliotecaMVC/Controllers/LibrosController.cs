@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
 using BibliotecaMVC.Models;
 using BibliotecaMVC.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace BibliotecaMVC.Controllers
 {
@@ -10,79 +12,124 @@ namespace BibliotecaMVC.Controllers
     public class LibrosController : Controller
     {
         private readonly BibliotecaContext _context;
+        private readonly ILogger<LibrosController> _logger;
 
-        public LibrosController(BibliotecaContext context)
+        public LibrosController(BibliotecaContext context, ILogger<LibrosController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // Libros
         public async Task<IActionResult> Index()
         {
-            var libros = await _context.Libros.ToListAsync();
+            _logger.LogInformation("Consultando el listado de Libros");
 
-            return View(libros);
+            try
+            {
+                var libros = await _context.Libros.ToListAsync();
+                return View(libros);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Se produjo un error al consultar el listado de libros");
+                throw;
+            }
         }
 
         // Libros detalles
         public async Task<IActionResult> Details(int id)
         {
-            var libro = await _context.Libros
-                .FirstOrDefaultAsync(l => l.Id == id);
+            _logger.LogInformation("Consultando los detalles del libro con identificador {LibroId}", id);
 
-            if (libro == null)
+            try
             {
-                return NotFound();
-            }
+                var libro = await _context.Libros.FirstOrDefaultAsync(l => l.Id == id);
 
-            return View(libro);
+                if (libro == null)
+                {
+                    _logger.LogWarning("No se encontro el libro solicitado con el identificador {LibroId}", id);
+                    return NotFound();
+                }
+
+                return View(libro);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Se produjo un error al consultar los detalles del libro con identificador {LibroId}", id);
+                throw;
+            }
         }
 
-        // Libros creación
-
+        // Libros creación (GET)
         [Authorize(Roles = "Admin, Bibliotecario")]
         public IActionResult Create()
         {
+            _logger.LogInformation("Iniciando la operacion de creacion de un libro");
             return View();
         }
 
-        // Libros creación
+        // Libros creación (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Bibliotecario")]
         public async Task<IActionResult> Create(Libro libro)
         {
+            _logger.LogInformation("Iniciando la operacion de creacion de un libro");
+
             if (!ModelState.IsValid)
             {
+                _logger.LogError("El libro enviado no cumple con los requerimientos minimos");
                 return View(libro);
             }
 
-            _context.Libros.Add(libro);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Libros.Add(libro);
+                await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Se produjo un error al crear el libro");
+                throw;
+            }
         }
 
-        // Libros editar
+        // Libros editar (GET)
         [Authorize(Roles = "Admin, Bibliotecario")]
         public async Task<IActionResult> Edit(int id)
         {
-            var libro = await _context.Libros.FindAsync(id);
+            _logger.LogInformation("Iniciando la operacion de edicion del libro con identificador {LibroId}", id);
 
-            if (libro == null)
+            try
             {
-                return NotFound();
-            }
+                var libro = await _context.Libros.FindAsync(id);
 
-            return View(libro);
+                if (libro == null)
+                {
+                    _logger.LogWarning("No se encontro el libro solicitado con identificador {LibroId}", id);
+                    return NotFound();
+                }
+
+                return View(libro);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Se produjo un error al consultar los detalles del libro para su edicion con identificador {LibroId}", id);
+                throw;
+            }
         }
 
-        // Libros editar
+        // Libros editar (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Bibliotecario")]
         public async Task<IActionResult> Edit(int id, Libro libro)
         {
+            _logger.LogInformation("Iniciando la edicion del libro con identificador {LibroId}", id);
+
             if (id != libro.Id)
             {
                 return BadRequest();
@@ -93,16 +140,26 @@ namespace BibliotecaMVC.Controllers
                 return View(libro);
             }
 
-            var exists = await _context.Libros.AnyAsync(l => l.Id == id);
-            if (!exists)
+            try
             {
-                return NotFound();
+                var exists = await _context.Libros.AnyAsync(l => l.Id == id);
+
+                if (!exists)
+                {
+                    _logger.LogWarning("No se encontro el libro solicitado con identificador {LibroId}", id);
+                    return NotFound();
+                }
+
+                _context.Update(libro);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
             }
-
-            _context.Update(libro);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Se produjo un error al editar el libro con identificador {LibroId}", id);
+                throw;
+            }
         }
 
         // Libros borrar
@@ -111,17 +168,28 @@ namespace BibliotecaMVC.Controllers
         [Authorize(Roles = "Admin, Bibliotecario")]
         public async Task<IActionResult> Delete(int id)
         {
-            var libro = await _context.Libros.FindAsync(id);
+            _logger.LogInformation("Iniciando la eliminacion del libro con identificador {LibroId}", id);
 
-            if (libro == null)
+            try
             {
-                return NotFound();
+                var libro = await _context.Libros.FindAsync(id);
+
+                if (libro == null)
+                {
+                    _logger.LogWarning("No se encontro el libro solicitado para eliminar con identificador {LibroId}", id);
+                    return NotFound();
+                }
+
+                _context.Libros.Remove(libro);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
             }
-
-            _context.Libros.Remove(libro);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Se produjo un error al eliminar el libro con identificador {LibroId}", id);
+                throw;
+            }
         }
     }
 }

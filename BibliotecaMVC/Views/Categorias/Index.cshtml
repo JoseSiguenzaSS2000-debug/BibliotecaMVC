@@ -1,56 +1,55 @@
-﻿@model  IEnumerable<BibliotecaMVC.Models.Categoria>
+﻿@model IEnumerable<BibliotecaMVC.Models.Categoria>
+
 @{
     ViewData["Title"] = "Categorias";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Listado de Categorías</h2>
+<div class="d-flex justify-content-between align-content-center mb-3">
+    <h1 class="h3 mb-0">
+        @ViewData["Title"]
+        <small class="text-muted">(@Model.Count())</small>
+    </h1>
+
+    @if (User.IsInRole("Admin") || User.IsInRole("Bibliotecario"))
+    {
+        <a class="btn btn-primary" asp-action="Create">Nueva Categoría +</a>
+    }
 </div>
-<a class="btn btn-primary" asp-controller="Categorias" asp-action="Create">Agregar  categoria</a>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var categoria in Model)
-        {
-            <tr>
-                <td>@categoria.ID</td>
-                <td>@categoria.Nombre</td>
-                <td>@categoria.Descripcion</td>
 
-                <td>
-                    <a asp-action="Edit"asp-route-id="@categoria.ID"class="btn btn-warning"> Editar </a>
-                    <form asp-action="Delete"asp-route-id="@categoria.ID"method="post"style="display:inline;"onsubmit="return confirm('¿Está seguro de eliminar esta categoría?');">
+<div class="row">
+    @foreach (var categoria in Model)
+    {
+        <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="card mb-4 shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">@categoria.Nombre</h5>
 
-                        <button type="submit" class="btn btn-danger">
-                            Eliminar
-                        </button>
+                    
 
-                    </form>
-                </td>
+                    <p class="card-text mb-3">@categoria.Descripcion</p>
 
-            </tr>
-        }
-    </tbody>
-</table>
+                    <div class="d-flex gap-2 mt-auto">
+                        @if (User.IsInRole("Admin") || User.IsInRole("Bibliotecario"))
+                        {
+                            <a class="btn btn-outline-secondary swal-edit-link"
+                               asp-action="Edit"
+                               asp-route-id="@categoria.ID">Editar</a>
+                        }
 
-@section Scripts{
-    <script>
-        var mensaje = '@(TempData["SuccessMessage"] ?? "")';
-        if (mensaje){
-            Swal.fire({
-                icon: 'success',
-                title: 'Exito',
-                text: mensaje,
-                timer: 2000,
-                showConfirmButton: false
-            });
-        }
-    </script>
-}
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <form asp-action="Delete"
+                                  asp-route-id="@categoria.ID"
+                                  method="post"
+                                  class="swal-delete-form d-inline">
+                                @Html.AntiForgeryToken()
+
+                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
