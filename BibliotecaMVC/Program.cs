@@ -28,28 +28,32 @@ builder.Services.ConfigureApplicationCookie(Options =>
     Options.AccessDeniedPath = "/Account/AccessDenied";
 });
 
-
 // Add services to the container.
-
 
 builder.Services.AddSingleton<IRepositorioLibro, RepositorioEnMemoria>();
 builder.Services.AddScoped<IAutorService, AutorService>();
 
+// Servicio de libros para desacoplar el controlador de la base de datos.
+builder.Services.AddScoped<ILibroService, LibroService>();
+
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope()) {
+using (var scope = app.Services.CreateScope())
+{
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
     var usuarios = await userManager.Users.ToListAsync();
+
     foreach (var usuario in usuarios)
     {
         if ((await userManager.GetRolesAsync(usuario)).Count == 0)
         {
             var result = await userManager.AddToRoleAsync(usuario, "Usuario");
-            if(!result.Succeeded)
+
+            if (!result.Succeeded)
             {
                 throw new InvalidOperationException(
-                    $"No se pudo asignar el rol usuario a {usuario.UserName}: {string.Join(",",result.Errors.Select(error => error.Description))}"
-                    );
+                    $"No se pudo asignar el rol usuario a {usuario.UserName}: {string.Join(",", result.Errors.Select(error => error.Description))}"
+                );
             }
         }
     }
@@ -59,7 +63,7 @@ using (var scope = app.Services.CreateScope()) {
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    // The default HSTS value is 30 days. You may want to change this value for production scenarios.
     app.UseHsts();
 }
 
@@ -75,6 +79,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();

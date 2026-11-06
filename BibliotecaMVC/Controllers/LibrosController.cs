@@ -1,9 +1,13 @@
 ﻿
+// Importa el controlador MVC.
 using Microsoft.AspNetCore.Mvc;
+// Importa el modelo Libro.
 using BibliotecaMVC.Models;
-using BibliotecaMVC.Data;
-using Microsoft.EntityFrameworkCore;
+// Importa la interfaz del servicio de libros.
+using BibliotecaMVC.Services;
+// Importa las herramientas de autorización.
 using Microsoft.AspNetCore.Authorization;
+// Importa las herramientas de logging.
 using Microsoft.Extensions.Logging;
 
 namespace BibliotecaMVC.Controllers
@@ -11,12 +15,18 @@ namespace BibliotecaMVC.Controllers
     [Authorize]
     public class LibrosController : Controller
     {
-        private readonly BibliotecaContext _context;
+        // Declara la dependencia del servicio de libros.
+        private readonly ILibroService _libroService;
+
+        // Declara la dependencia del logger.
         private readonly ILogger<LibrosController> _logger;
 
-        public LibrosController(BibliotecaContext context, ILogger<LibrosController> logger)
+        // Constructor que recibe el servicio y el logger.
+        public LibrosController(
+            ILibroService libroService,
+            ILogger<LibrosController> logger)
         {
-            _context = context;
+            _libroService = libroService;
             _logger = logger;
         }
 
@@ -27,7 +37,9 @@ namespace BibliotecaMVC.Controllers
 
             try
             {
-                var libros = await _context.Libros.ToListAsync();
+                // Obtiene los libros mediante el servicio.
+                var libros = await _libroService.ObtenerTodosAsync();
+
                 return View(libros);
             }
             catch (Exception ex)
@@ -40,15 +52,19 @@ namespace BibliotecaMVC.Controllers
         // Libros detalles
         public async Task<IActionResult> Details(int id)
         {
-            _logger.LogInformation("Consultando los detalles del libro con identificador {LibroId}", id);
+            _logger.LogInformation(
+                "Consultando los detalles del libro con identificador {LibroId}", id);
 
             try
             {
-                var libro = await _context.Libros.FirstOrDefaultAsync(l => l.Id == id);
+                // Busca el libro mediante el servicio.
+                var libro = await _libroService.ObtenerPorIdAsync(id);
 
                 if (libro == null)
                 {
-                    _logger.LogWarning("No se encontro el libro solicitado con el identificador {LibroId}", id);
+                    _logger.LogWarning(
+                        "No se encontro el libro solicitado con el identificador {LibroId}", id);
+
                     return NotFound();
                 }
 
@@ -56,7 +72,11 @@ namespace BibliotecaMVC.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Se produjo un error al consultar los detalles del libro con identificador {LibroId}", id);
+                _logger.LogError(
+                    ex,
+                    "Se produjo un error al consultar los detalles del libro con identificador {LibroId}",
+                    id);
+
                 throw;
             }
         }
@@ -66,6 +86,7 @@ namespace BibliotecaMVC.Controllers
         public IActionResult Create()
         {
             _logger.LogInformation("Iniciando la operacion de creacion de un libro");
+
             return View();
         }
 
@@ -79,14 +100,16 @@ namespace BibliotecaMVC.Controllers
 
             if (!ModelState.IsValid)
             {
-                _logger.LogError("El libro enviado no cumple con los requerimientos minimos");
+                _logger.LogError(
+                    "El libro enviado no cumple con los requerimientos minimos");
+
                 return View(libro);
             }
 
             try
             {
-                _context.Libros.Add(libro);
-                await _context.SaveChangesAsync();
+                // Registra el libro mediante el servicio.
+                await _libroService.RegistrarAsync(libro);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -101,15 +124,19 @@ namespace BibliotecaMVC.Controllers
         [Authorize(Roles = "Admin, Bibliotecario")]
         public async Task<IActionResult> Edit(int id)
         {
-            _logger.LogInformation("Iniciando la operacion de edicion del libro con identificador {LibroId}", id);
+            _logger.LogInformation(
+                "Iniciando la operacion de edicion del libro con identificador {LibroId}", id);
 
             try
             {
-                var libro = await _context.Libros.FindAsync(id);
+                // Busca el libro mediante el servicio.
+                var libro = await _libroService.ObtenerPorIdAsync(id);
 
                 if (libro == null)
                 {
-                    _logger.LogWarning("No se encontro el libro solicitado con identificador {LibroId}", id);
+                    _logger.LogWarning(
+                        "No se encontro el libro solicitado con identificador {LibroId}", id);
+
                     return NotFound();
                 }
 
@@ -117,7 +144,11 @@ namespace BibliotecaMVC.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Se produjo un error al consultar los detalles del libro para su edicion con identificador {LibroId}", id);
+                _logger.LogError(
+                    ex,
+                    "Se produjo un error al consultar los detalles del libro para su edicion con identificador {LibroId}",
+                    id);
+
                 throw;
             }
         }
@@ -128,7 +159,8 @@ namespace BibliotecaMVC.Controllers
         [Authorize(Roles = "Admin, Bibliotecario")]
         public async Task<IActionResult> Edit(int id, Libro libro)
         {
-            _logger.LogInformation("Iniciando la edicion del libro con identificador {LibroId}", id);
+            _logger.LogInformation(
+                "Iniciando la edicion del libro con identificador {LibroId}", id);
 
             if (id != libro.Id)
             {
@@ -142,22 +174,26 @@ namespace BibliotecaMVC.Controllers
 
             try
             {
-                var exists = await _context.Libros.AnyAsync(l => l.Id == id);
+                // Actualiza el libro mediante el servicio.
+                var actualizado = await _libroService.ActualizarAsync(libro);
 
-                if (!exists)
+                if (!actualizado)
                 {
-                    _logger.LogWarning("No se encontro el libro solicitado con identificador {LibroId}", id);
+                    _logger.LogWarning(
+                        "No se encontro el libro solicitado con identificador {LibroId}", id);
+
                     return NotFound();
                 }
-
-                _context.Update(libro);
-                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Se produjo un error al editar el libro con identificador {LibroId}", id);
+                _logger.LogError(
+                    ex,
+                    "Se produjo un error al editar el libro con identificador {LibroId}",
+                    id);
+
                 throw;
             }
         }
@@ -168,26 +204,32 @@ namespace BibliotecaMVC.Controllers
         [Authorize(Roles = "Admin, Bibliotecario")]
         public async Task<IActionResult> Delete(int id)
         {
-            _logger.LogInformation("Iniciando la eliminacion del libro con identificador {LibroId}", id);
+            _logger.LogInformation(
+                "Iniciando la eliminacion del libro con identificador {LibroId}", id);
 
             try
             {
-                var libro = await _context.Libros.FindAsync(id);
+                // Elimina el libro mediante el servicio.
+                var eliminado = await _libroService.EliminarAsync(id);
 
-                if (libro == null)
+                if (!eliminado)
                 {
-                    _logger.LogWarning("No se encontro el libro solicitado para eliminar con identificador {LibroId}", id);
+                    _logger.LogWarning(
+                        "No se encontro el libro solicitado para eliminar con identificador {LibroId}",
+                        id);
+
                     return NotFound();
                 }
-
-                _context.Libros.Remove(libro);
-                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Se produjo un error al eliminar el libro con identificador {LibroId}", id);
+                _logger.LogError(
+                    ex,
+                    "Se produjo un error al eliminar el libro con identificador {LibroId}",
+                    id);
+
                 throw;
             }
         }
