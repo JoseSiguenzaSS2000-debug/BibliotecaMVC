@@ -7,12 +7,23 @@
     <h1 class="h3 mb-0"> @ViewData["Title"] <small class="text-muted">(@Model.Count())</small> </h1>
     @if (User.IsInRole("Admin") || User.IsInRole("Bibliotecario"))
     {
-    <a class="btn btn-primary" asp-action="Create">Nuevo Libro +</a>
+        <div class="d-flex gap-2">
+            <a class="btn btn-outline-danger" asp-controller="Reportes" asp-action="Reporte" target="_blank" rel="noopener">
+                abrir reporte
+            </a>
+
+            <a class="btn btn-danger" asp-controller="Reportes" asp-action="DescargarReporte" target="_blank" rel="noopener">
+                Descargar PDF
+            </a>
+
+            <a class="btn btn-success" asp-controller="Reportes" asp-action="DescargarExcel"> 
+                Descargar Excel
+            </a>
+
+            <a class="btn btn-primary" asp-action="Create">Nuevo Libro +</a>
+        </div>
     }
 </div>
-
-
-
 
 <div class="row">
     @foreach (var libro in Model)
@@ -34,10 +45,10 @@
                         }
                         @if (User.IsInRole("Admin") || User.IsInRole("Bibliotecario"))
                         {
-                        <form asp-action="Delete" asp-route-id="@libro.Id" method="post" class="swal-delete-form d-inline">
-                            @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                        </form>
+                            <form asp-action="Delete" asp-route-id="@libro.Id" method="post" class="swal-delete-form d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                            </form>
                         }
                     </div>
                 </div>

@@ -7,7 +7,17 @@
     <h1 class="h3 mb-0"> @ViewData["Title"] <small class="text-muted">(@Model.Count())</small> </h1>
     @if (User.IsInRole("Admin") || User.IsInRole("Bibliotecario"))
     {
-        <a class="btn btn-primary" asp-action="Create">Nuevo Autor +</a>
+        <div class="d-flex gap-2">
+            <a class="btn btn-outline-danger" asp-action="Reporte" target="_blank" rek="noopener">
+                abrir reporte
+            </a>
+
+            <a class="btn btn-danger" asp-action="DescargarReporte" target="_blank" rek="noopener">
+                Descargar PDF
+            </a>
+
+            <a class="btn btn-primary" asp-action="Create">Nuevo Autor +</a>
+        </div>
     }
     
 </div>

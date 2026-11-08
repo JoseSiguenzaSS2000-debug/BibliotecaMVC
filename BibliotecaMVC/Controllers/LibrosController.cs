@@ -1,13 +1,8 @@
 ﻿
-// Importa el controlador MVC.
 using Microsoft.AspNetCore.Mvc;
-// Importa el modelo Libro.
 using BibliotecaMVC.Models;
-// Importa la interfaz del servicio de libros.
 using BibliotecaMVC.Services;
-// Importa las herramientas de autorización.
 using Microsoft.AspNetCore.Authorization;
-// Importa las herramientas de logging.
 using Microsoft.Extensions.Logging;
 
 namespace BibliotecaMVC.Controllers
